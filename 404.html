@@ -1,1 +1,197 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>HackatonApp</title><base href="https://rmichelberger.github.io/bigbank/"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="favicon.ico"><link href="styles.b35f44124aae1dd90727.bundle.css" rel="stylesheet"/></head><body><app-root></app-root><script type="text/javascript" src="inline.318b50c57b4eba3d437b.bundle.js"></script><script type="text/javascript" src="polyfills.da6d2cdf7c9b60de52c0.bundle.js"></script><script type="text/javascript" src="main.b047aa778ce3f6132ab7.bundle.js"></script></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>HackatonApp</title><base href="https://rmichelberger.github.io/bigbank/"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="favicon.ico"><link href="styles.b35f44124aae1dd90727.bundle.css" rel="stylesheet"/></head><body><div id="contents"><h1>Bob Pay Test</h1><p>This merchant accepts Bob Pay and interledger. <a href="pr.js">View source</a>.</p><p>Price: USD <strong>$55.00</strong></p><p><button onclick="onBuyClicked()">Buy</button></p></div><pre id="msg"></pre><app-root></app-root><script>function buildPaymentRequest() {
+    if (!window.PaymentRequest) {
+      return null;
+    }
+
+    const supportedInstruments = [{
+      supportedMethods: [
+        'https://credit-suisse.com/cspay',
+      ],
+    }];
+
+    const details = {
+      total: {
+        label: 'Donation',
+        amount: {
+          currency: 'USD',
+          value: '55.00',
+        },
+      },
+      displayItems: [{
+        label: 'Original donation amount',
+        amount: {
+          currency: 'USD',
+          value: '65.00',
+        },
+      }, {
+        label: 'Friends and family discount',
+        amount: {
+          currency: 'USD',
+          value: '-10.00',
+        },
+      }],
+    };
+
+    let request = null;
+
+    try {
+      request = new PaymentRequest(supportedInstruments, details);
+      if (request.canMakePayment) {
+        request.canMakePayment().then(function(result) {
+          info(result ? 'Can make payment' : 'Cannot make payment');
+        }).catch(function(err) {
+          error(err);
+        });
+      }
+    } catch (e) {
+      error('Developer mistake: \'' + e.message + '\'');
+    }
+
+    return request;
+}
+
+let request = buildPaymentRequest();
+
+/**
+ * Handles the response from PaymentRequest.show().
+ */
+function handlePaymentResponse(response) {
+  window.setTimeout(function() {
+    response.complete('success')
+      .then(function() {
+        done('This is a demo website. No payment will be processed.', response);
+      })
+      .catch(function(err) {
+        error(err);
+        request = buildPaymentRequest();
+      });
+  }, 500);
+}
+
+// Handle the response from PaymentRequest.show() if the page has been unloaded
+// while the user was performing the payment.
+window.addEventListener('paymentresponse', handlePaymentResponse);
+ /**
+ * Launches payment request for Bob Pay.
+ */
+ function onBuyClicked() { // eslint-disable-line no-unused-vars
+    if (!window.PaymentRequest || !request) {
+      error('PaymentRequest API is not supported.');
+      return;
+    }
+  
+    try {
+      request.show()
+        .then(handlePaymentResponse)
+        .catch(function(err) {
+          error(err);
+          request = buildPaymentRequest();
+        });
+    } catch (e) {
+      error('Developer mistake: \'' + e.message + '\'');
+      request = buildPaymentRequest();
+    }
+  }
+var timeoutID1;
+var timeoutID2;
+
+/**
+ * Prints the given error message.
+ * @param {string} msg - The error message to print.
+ */
+function error(msg) {  // eslint-disable-line no-unused-vars
+  if (timeoutID1) {
+    window.clearTimeout(timeoutID1);
+  }
+  if (timeoutID2) {
+    window.clearTimeout(timeoutID2);
+  }
+  let element = document.createElement('pre');
+  element.innerHTML = msg;
+  element.className = 'error';
+  document.getElementById('msg').appendChild(element);
+  timeoutID1 = window.setTimeout(function() {
+    if (element.className !== 'error') {
+      return;
+    }
+    element.className = 'error-hide';
+    timeoutID2 = window.setTimeout(function() {
+      element.innerHTML = '';
+      element.className = '';
+    }, 500);
+  }, 10000);
+}
+
+/**
+ * Prints the given informational message.
+ * @param {string} msg - The information message to print.
+ */
+function info(msg) {
+  let element = document.createElement('pre');
+  element.innerHTML = msg;
+  element.className = 'info';
+  document.getElementById('msg').appendChild(element);
+}
+
+/**
+ * Converts an address object into a dictionary.
+ * @param {PaymentAddress} addr - The address to convert.
+ * @return {object} The resulting dictionary.
+ */
+function toDictionary(addr) {  // eslint-disable-line no-unused-vars
+  let dict = {};
+  if (addr) {
+    if (addr.toJSON) {
+      return addr;
+    }
+    dict.country = addr.country;
+    dict.region = addr.region;
+    dict.city = addr.city;
+    dict.dependentLocality = addr.dependentLocality;
+    dict.addressLine = addr.addressLine;
+    dict.postalCode = addr.postalCode;
+    dict.sortingCode = addr.sortingCode;
+    dict.languageCode = addr.languageCode;
+    dict.organization = addr.organization;
+    dict.recipient = addr.recipient;
+    dict.phone = addr.phone;
+  }
+  return dict;
+}
+
+/**
+ * Called when the payment request is complete.
+ * @param {string} message - The human readable message to display.
+ * @param {PaymentResponse} resp - The payment response.
+ */
+function done(message, resp) {  // eslint-disable-line no-unused-vars
+  let element = document.getElementById('contents');
+  element.innerHTML = message;
+
+  if (resp.toJSON) {
+    info(JSON.stringify(resp, undefined, 2));
+    return;
+  }
+
+  let shippingOption = resp.shippingOption ?
+      'shipping, delivery, pickup option: ' + resp.shippingOption + '<br/>' :
+      '';
+
+  let shippingAddress = resp.shippingAddress ?
+      'shipping, delivery, pickup address: ' +
+          JSON.stringify(toDictionary(resp.shippingAddress), undefined, 2) +
+          '<br/>' :
+      '';
+
+  let instrument =
+      'instrument:' + JSON.stringify(resp.details, undefined, 2) + '<br/>';
+
+  let method = 'method: ' + resp.methodName + '<br/>';
+  let email = resp.payerEmail ? 'email: ' + resp.payerEmail + '<br/>' : '';
+  let phone = resp.payerPhone ? 'phone: ' + resp.payerPhone + '<br/>' : '';
+  let name = resp.payerName ? 'name: ' + resp.payerName + '<br/>' : '';
+
+
+  info(email + phone + name + shippingOption + shippingAddress + method +
+      instrument);
+}</script><script type="text/javascript" src="inline.318b50c57b4eba3d437b.bundle.js"></script><script type="text/javascript" src="polyfills.da6d2cdf7c9b60de52c0.bundle.js"></script><script type="text/javascript" src="main.cd64b9a32695354182ea.bundle.js"></script></body></html>
