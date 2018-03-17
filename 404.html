@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>CS Donation</title><base href="https://rmichelberger.github.io/bigbank/"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="favicon.ico"><link href="styles.0368d0ccf40d8c0452c7.bundle.css" rel="stylesheet"/></head><body><app-root></app-root><script>function buildPaymentRequest() {
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>CS Donation</title><base href="https://rmichelberger.github.io/bigbank/"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="favicon.ico"><link href="styles.0368d0ccf40d8c0452c7.bundle.css" rel="stylesheet"/></head><body><app-root></app-root><script>function buildPaymentRequest(amount) {
     if (!window.PaymentRequest) {
       return null;
     }
@@ -13,25 +13,12 @@
 
     const details = {
       total: {
-        label: 'Donation',
+        label: 'CS Donation',
         amount: {
           currency: 'CHF',
-          value: '55.00',
+          value: amount,
         },
-      },
-      displayItems: [{
-        label: 'Original donation amount',
-        amount: {
-          currency: 'CHF',
-          value: '65.00',
-        },
-      }, {
-        label: 'Friends and family discount',
-        amount: {
-          currency: 'CHF',
-          value: '-10.00',
-        },
-      }],
+      }
     };
 
     let request = null;
@@ -52,7 +39,7 @@
     return request;
 }
 
-let request = buildPaymentRequest();
+let request = buildPaymentRequest(50);
 
 /**
  * Handles the response from PaymentRequest.show().
@@ -66,7 +53,7 @@ function handlePaymentResponse(response) {
       })
       .catch(function(err) {
         //error(err);
-        request = buildPaymentRequest();
+        request = buildPaymentRequest(50);
       });
   }, 500);
 }
@@ -77,22 +64,23 @@ window.addEventListener('paymentresponse', handlePaymentResponse);
  /**
  * Launches payment request for Bob Pay.
  */
- function onBuyClicked() { // eslint-disable-line no-unused-vars
+ function onBuyClicked(amount) { // eslint-disable-line no-unused-vars
     if (!window.PaymentRequest || !request) {
       //error('PaymentRequest API is not supported.');
       return;
     }
   
     try {
+      request = buildPaymentRequest(amount);
       request.show()
         .then(handlePaymentResponse)
         .catch(function(err) {
           //error(err);
-          request = buildPaymentRequest();
+          request = buildPaymentRequest(50);
         });
     } catch (e) {
       //error('Developer mistake: \'' + e.message + '\'');
-      request = buildPaymentRequest();
+      request = buildPaymentRequest(50);
     }
   }
 var timeoutID1;
@@ -312,4 +300,4 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     //install();
   });
-}</script><script type="text/javascript" src="inline.318b50c57b4eba3d437b.bundle.js"></script><script type="text/javascript" src="polyfills.da6d2cdf7c9b60de52c0.bundle.js"></script><script type="text/javascript" src="main.b53e44325a276abbfffd.bundle.js"></script></body></html>
+}</script><script type="text/javascript" src="inline.318b50c57b4eba3d437b.bundle.js"></script><script type="text/javascript" src="polyfills.da6d2cdf7c9b60de52c0.bundle.js"></script><script type="text/javascript" src="main.4e281b7925ecc6caeb83.bundle.js"></script></body></html>
