@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>HackatonApp</title><base href=".angular-cli.json"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="favicon.ico"><link href="styles.0368d0ccf40d8c0452c7.bundle.css" rel="stylesheet"/></head><body><app-root></app-root><script>function buildPaymentRequest() {
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>CS Donation</title><base href=".angular-cli.json"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="favicon.ico"><link href="styles.0368d0ccf40d8c0452c7.bundle.css" rel="stylesheet"/></head><body><app-root></app-root><script>function buildPaymentRequest() {
     if (!window.PaymentRequest) {
       return null;
     }
@@ -61,7 +61,7 @@ function handlePaymentResponse(response) {
   window.setTimeout(function() {
     response.complete('success')
       .then(function() {
-        alert("SUCCESS: " + response);
+        alert("SUCCESS: " + JSON.stringify(response));
         //done('This is a demo website. No payment will be processed.', response);
       })
       .catch(function(err) {
