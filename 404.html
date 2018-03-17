@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>HackatonApp</title><base href="https://rmichelberger.github.io/bigbank/"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="favicon.ico"><link href="styles.b35f44124aae1dd90727.bundle.css" rel="stylesheet"/></head><body><div id="contents"><h1>Bob Pay Test</h1><p>This merchant accepts Bob Pay and interledger. <a href="pr.js">View source</a>.</p><p>Price: USD <strong>$55.00</strong></p><p><button onclick="onBuyClicked()">Buy</button></p></div><pre id="msg"></pre><app-root></app-root><script>function buildPaymentRequest() {
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>HackatonApp</title><base href="https://rmichelberger.github.io/bigbank/"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="favicon.ico"><link href="styles.b35f44124aae1dd90727.bundle.css" rel="stylesheet"/></head><body><app-root></app-root><script>function buildPaymentRequest() {
     if (!window.PaymentRequest) {
       return null;
     }
@@ -15,20 +15,20 @@
       total: {
         label: 'Donation',
         amount: {
-          currency: 'USD',
+          currency: 'CHF',
           value: '55.00',
         },
       },
       displayItems: [{
         label: 'Original donation amount',
         amount: {
-          currency: 'USD',
+          currency: 'CHF',
           value: '65.00',
         },
       }, {
         label: 'Friends and family discount',
         amount: {
-          currency: 'USD',
+          currency: 'CHF',
           value: '-10.00',
         },
       }],
@@ -311,4 +311,4 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     //install();
   });
-}</script><script type="text/javascript" src="inline.318b50c57b4eba3d437b.bundle.js"></script><script type="text/javascript" src="polyfills.da6d2cdf7c9b60de52c0.bundle.js"></script><script type="text/javascript" src="main.cd64b9a32695354182ea.bundle.js"></script></body></html>
+}</script><script type="text/javascript" src="inline.318b50c57b4eba3d437b.bundle.js"></script><script type="text/javascript" src="polyfills.da6d2cdf7c9b60de52c0.bundle.js"></script><script type="text/javascript" src="main.12f647f118b087fb08ae.bundle.js"></script></body></html>
