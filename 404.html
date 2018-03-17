@@ -5,6 +5,8 @@
 
     const supportedInstruments = [{
       supportedMethods: [
+        'interledger',
+        'basic-card',
         'https://192.168.43.223:8443/',
       ],
     }];
@@ -304,9 +306,9 @@ function uninstall() {
         });
 }
 
-check();
+//check();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    install();
+    //install();
   });
 }</script><script type="text/javascript" src="inline.318b50c57b4eba3d437b.bundle.js"></script><script type="text/javascript" src="polyfills.da6d2cdf7c9b60de52c0.bundle.js"></script><script type="text/javascript" src="main.cd64b9a32695354182ea.bundle.js"></script></body></html>
