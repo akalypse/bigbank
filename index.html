@@ -61,7 +61,7 @@ function handlePaymentResponse(response) {
   window.setTimeout(function() {
     response.complete('success')
       .then(function() {
-        alert("SUCCESS: " + JSON.stringify(response));
+        alert("Payment processed successfully!!!");
         //done('This is a demo website. No payment will be processed.', response);
       })
       .catch(function(err) {
