@@ -1,0 +1,27 @@
+var express = require('express');
+var http = require('http');
+var https = require('https');
+var fs = require('fs');
+
+var sslOptions = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem'),
+    passphrase: '123456'
+  };
+var app = express();
+var server = https.createServer(sslOptions, app);
+
+server.listen(7443,'127.0.0.1',function(){
+    server.close(function(){
+      server.listen(7443,'192.168.43.223')
+    })
+   });
+
+
+var options = {
+    root: __dirname + '/pay/',    
+  };
+
+app.get('/pay/app.js', function (req, res) {
+    res.sendFile('app.js', options);
+});

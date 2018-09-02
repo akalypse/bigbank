@@ -1,0 +1,11 @@
+{
+    "related_applications": [{
+      "platform": "play",
+      "id": "com.cs.pay",
+      "min_version": "1",
+      "fingerprints": [{
+        "type": "sha256_cert",
+        "value": "31:E4:00:BE:B0:C3:B8:61:CF:8A:21:D0:9F:8C:88:01:43:5F:ED:F8:D2:E3:F3:7A:B0:DB:B9:8C:FA:27:3F:10"
+      }]
+    }]
+  }
