@@ -16,13 +16,11 @@
       return null;
     }
 
-    const supportedInstruments = [{
-      supportedMethods: [
-        'interledger',
-        'basic-card',
-        'https://192.168.43.223:8443/',
-      ],
-    }];
+    const supportedInstruments = [
+      {  supportedMethods: 'interledger'},
+      {  supportedMethods: 'basic-card'},
+      {  supportedMethods: 'https://192.168.43.223:8443/'}
+    ];
 
     const details = {
       total: {
